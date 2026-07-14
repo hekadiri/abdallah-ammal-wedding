@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Abdallah &amp; Ammal — Invitation Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Gulzar&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf6ef;
+    --cream-dark: #f3ecdf;
+    --ivory: #fffdf8;
+    --gold: #b99755;
+    --gold-light: #d4bc8b;
+    --gold-pale: #e9dcc0;
+    --ink: #5a4f3f;
+    --ink-soft: #8a7d67;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 720px; height: 1280px; overflow: hidden; }
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--ink);
+    background:
+      radial-gradient(ellipse 60% 45% at 12% 8%, rgba(212,188,139,.18), transparent 65%),
+      radial-gradient(ellipse 55% 40% at 88% 18%, rgba(232,213,204,.30), transparent 65%),
+      radial-gradient(ellipse 65% 50% at 80% 90%, rgba(168,179,154,.16), transparent 65%),
+      var(--cream);
+    position: relative;
+  }
+  .ar { font-family: 'Amiri', serif; direction: rtl; }
+
+  #petals { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .scene.show { opacity: 1; transition: opacity .8s ease; }
+  .scene.hide { opacity: 0 !important; transition: opacity .7s ease; }
+
+  .scene .el { opacity: 0; }
+  .scene.show .el { animation: fadeUp 1s cubic-bezier(.22,1,.36,1) var(--d, .1s) forwards; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- scene 1: envelope ---------- */
+  #env { opacity: 1; z-index: 10; }
+  .door {
+    position: absolute; top: 0; bottom: 0; width: 51.5%;
+    background: var(--cream-dark) url('https://cdn.sanity.io/images/ne0x6yp7/production/5c3a5568cfcdc676fc08f3a9bab7f79c010119a6-1408x768.jpg?rect=320,0,768,768&w=640&fm=webp&q=75') top center / 560px auto repeat;
+    filter: drop-shadow(0 0 22px rgba(90,79,63,.28));
+    transition: transform 2s cubic-bezier(.65,0,.35,1) .35s;
+  }
+  .door-left {
+    left: 0;
+    -webkit-mask: linear-gradient(#000,#000) left / calc(100% - 26px) 100% no-repeat,
+      radial-gradient(26px 26px at 0% 50%, #000 98%, transparent) right / 26px 52px repeat-y;
+  }
+  .door-right {
+    right: 0;
+    -webkit-mask: linear-gradient(#000,#000) right / calc(100% - 26px) 100% no-repeat,
+      radial-gradient(26px 26px at 100% 50%, #000 98%, transparent) left / 26px 52px repeat-y;
+  }
+  #env.opening .door-left  { transform: translateX(-104%); }
+  #env.opening .door-right { transform: translateX(104%); }
+  .ribbon {
+    position: absolute; left: 0; right: 0; top: 50%; height: 54px;
+    transform: translateY(-50%);
+    background: linear-gradient(180deg, #f6efdf, #e9dcc2);
+    box-shadow: 0 3px 14px rgba(90,79,63,.18);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .seal-img {
+    position: absolute; left: 50%; top: 50%; width: 190px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    mix-blend-mode: multiply;
+    transition: opacity .7s ease, transform .7s ease;
+    animation: sealIn 1.2s cubic-bezier(.22,1,.36,1) .4s backwards;
+  }
+  @keyframes sealIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(1.6); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  #env.opening .seal-img { opacity: 0; transform: translate(-50%, -50%) scale(1.18) rotate(8deg); }
+  #env.opening .ribbon   { opacity: 0; transform: translateY(24px); }
+  .env-title {
+    position: absolute; left: 0; right: 0; top: calc(50% - 210px);
+    font-family: 'Amiri', serif; font-size: 44px; color: var(--ink);
+    transition: opacity .5s ease;
+  }
+  .env-title .en {
+    display: block; font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; letter-spacing: .34em; text-transform: uppercase;
+    color: var(--ink-soft); margin-top: 12px;
+  }
+  #env.opening .env-title { opacity: 0; }
+
+  /* ---------- scene 2: names ---------- */
+  .arch {
+    width: 560px;
+    padding: 90px 50px 70px;
+    background: linear-gradient(175deg, rgba(255,253,248,.9), rgba(251,245,234,.9));
+    border: 1px solid var(--gold-pale);
+    border-radius: 300px 300px 24px 24px;
+    box-shadow: 0 30px 60px -30px rgba(90,79,63,.25), inset 0 0 0 8px var(--cream), inset 0 0 0 9px var(--gold-pale);
+  }
+  .bismillah { font-family: 'Aref Ruqaa', serif; direction: rtl; font-size: 30px; color: var(--gold); margin-bottom: 26px; }
+  .families { font-size: 19px; letter-spacing: .35em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 30px; }
+  .names-ar { font-family: 'Gulzar', serif; direction: rtl; font-size: 74px; line-height: 1.9; color: var(--ink); }
+  .star { font-size: 40px; color: var(--gold); line-height: 1; margin: 10px 0; }
+  .names-en {
+    font-family: 'Great Vibes', cursive; font-size: 66px; color: var(--gold); line-height: 1.3;
+    background: linear-gradient(100deg, var(--gold) 20%, #e6ce9c 40%, var(--gold) 60%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .scene.show .names-en.el { animation: fadeUp 1s cubic-bezier(.22,1,.36,1) var(--d) forwards, shimmer 5s linear calc(var(--d) + 1.2s) infinite; }
+  @keyframes shimmer { to { background-position: 200% center; } }
+  .date-line { font-size: 21px; letter-spacing: .22em; text-transform: uppercase; margin-top: 30px; white-space: nowrap; }
+  .date-line .ar-date { display: block; font-family: 'Amiri', serif; font-size: 26px; letter-spacing: .08em; color: var(--ink-soft); margin-top: 12px; }
+
+  /* ---------- scene 3: blessing ---------- */
+  .sec-ar { font-family: 'Aref Ruqaa', serif; direction: rtl; font-size: 44px; color: var(--gold); margin-bottom: 8px; }
+  .sec-en { font-family: 'Great Vibes', cursive; font-size: 48px; color: var(--ink); margin-bottom: 44px; }
+  .blessing { font-family: 'Amiri', serif; direction: rtl; font-size: 40px; line-height: 2; color: var(--ink); padding: 0 70px; }
+  .blessing-en { direction: ltr; font-size: 27px; font-style: italic; color: var(--ink-soft); line-height: 1.8; padding: 0 90px; margin-top: 30px; }
+  .flourish { width: 160px; margin-top: 48px; color: var(--gold-light); }
+
+  /* ---------- scene 4: details ---------- */
+  .couple-img {
+    width: 560px;
+    mix-blend-mode: multiply;
+    -webkit-mask-image: radial-gradient(ellipse 52% 52% at 50% 46%, #000 58%, transparent 92%);
+    margin-bottom: 8px;
+  }
+  .detail-block { margin-top: 6px; }
+  .detail-block h3 { font-size: 20px; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 10px; }
+  .detail-block p { font-size: 30px; line-height: 1.5; }
+  .detail-block .sub { color: var(--ink-soft); font-size: 24px; }
+  .detail-sep { width: 220px; height: 1px; background: linear-gradient(to right, transparent, var(--gold-pale), transparent); margin: 26px auto; }
+
+  /* ---------- scene 5: rsvp ---------- */
+  .rsvp-names { font-family: 'Great Vibes', cursive; font-size: 74px; color: var(--gold); }
+  .rsvp-ar { font-family: 'Aref Ruqaa', serif; direction: rtl; font-size: 40px; color: var(--ink); margin: 26px 0 8px; }
+  .rsvp-line { font-size: 27px; color: var(--ink-soft); font-style: italic; margin-bottom: 46px; }
+  .rsvp-btn {
+    display: inline-block; padding: 22px 74px;
+    font-size: 24px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--ivory); background: linear-gradient(120deg, #c3a15f, var(--gold) 45%, #a58347);
+    border-radius: 100px; box-shadow: 0 18px 35px -15px rgba(185,151,85,.6);
+  }
+  .rsvp-url { margin-top: 30px; font-size: 24px; letter-spacing: .06em; color: var(--ink); }
+  .rsvp-date { margin-top: 46px; font-size: 21px; letter-spacing: .3em; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<canvas id="petals"></canvas>
+
+<div class="scene" id="env">
+  <div class="door door-left"></div>
+  <div class="door door-right"></div>
+  <div class="ribbon"></div>
+  <img class="seal-img" src="https://cdn.sanity.io/images/ne0x6yp7/production/951659c302d49629827355a66cc90dc58279d1e7-1408x768.jpg?rect=520,180,380,380&w=380&fm=webp&q=80" alt="">
+  <p class="env-title ar">دعوة زفاف<span class="en">Wedding Invitation</span></p>
+</div>
+
+<div class="scene" id="s-names">
+  <div class="arch">
+    <p class="bismillah el" style="--d:.2s">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+    <p class="families el" style="--d:.5s">Together with their families</p>
+    <h1 class="names-ar el" style="--d:.8s">عبدالله &nbsp;و&nbsp; أمل</h1>
+    <div class="star el" style="--d:1.1s">✦</div>
+    <h2 class="names-en el" style="--d:1.3s">Abdallah &amp; Ammal</h2>
+    <p class="date-line el" style="--d:1.7s">November 8, 2026 · 6:00 PM<span class="ar ar-date">الأحد ٨ نوفمبر ٢٠٢٦</span></p>
+  </div>
+</div>
+
+<div class="scene" id="s-blessing">
+  <p class="sec-ar el" style="--d:.2s">دعاء</p>
+  <p class="sec-en el" style="--d:.4s">A Blessing</p>
+  <p class="blessing el" style="--d:.8s">بَارَكَ اللهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ</p>
+  <p class="blessing-en el" style="--d:1.4s">May Allah bless them both, shower His blessings upon them, and unite them in all that is good.</p>
+  <svg class="flourish el" style="--d:1.8s" viewBox="0 0 130 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 10 Q 32 2 65 10 T 125 10" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="65" cy="10" r="2.6" fill="currentColor"/>
+  </svg>
+</div>
+
+<div class="scene" id="s-details">
+  <img class="couple-img el" style="--d:.2s" src="https://cdn.sanity.io/images/ne0x6yp7/production/b7ed8d062d84750a30a4489ca884cfceb24e53c3-1408x768.jpg?rect=330,80,660,620&w=800&fm=webp&q=80" alt="">
+  <div class="detail-block el" style="--d:.7s">
+    <h3>When · متى</h3>
+    <p>Sunday, November 8, 2026</p>
+    <p class="sub">6:00 in the evening</p>
+  </div>
+  <div class="detail-sep el" style="--d:1s"></div>
+  <div class="detail-block el" style="--d:1.2s">
+    <h3>Where · أين</h3>
+    <p>La Roma Banquet Hall</p>
+    <p class="sub">32550 Cherry Hill Rd · Garden City, MI</p>
+  </div>
+</div>
+
+<div class="scene" id="s-rsvp">
+  <p class="rsvp-names el" style="--d:.2s">Abdallah &amp; Ammal</p>
+  <p class="rsvp-ar el" style="--d:.6s">تشرفونا بحضوركم</p>
+  <p class="rsvp-line el" style="--d:.9s">Our joy will only be complete with you by our side.</p>
+  <div class="rsvp-btn el" style="--d:1.3s">RSVP</div>
+  <p class="rsvp-url el" style="--d:1.6s">hekadiri.github.io/abdallah-ammal-wedding</p>
+  <p class="rsvp-date el" style="--d:2s">11 · 08 · 2026</p>
+</div>
+
+<script>
+  const t = (ms, fn) => setTimeout(fn, ms);
+  const el = id => document.getElementById(id);
+
+  Promise.all([
+    document.fonts.ready,
+    new Promise(r => window.addEventListener('load', r, { once: true }))
+  ]).then(() => {
+    document.title = 'READY';
+    t(3000,  () => el('env').classList.add('opening'));
+    t(5400,  () => el('env').classList.add('hide'));
+    t(5700,  () => el('s-names').classList.add('show'));
+    t(12800, () => el('s-names').classList.add('hide'));
+    t(13600, () => el('s-blessing').classList.add('show'));
+    t(18800, () => el('s-blessing').classList.add('hide'));
+    t(19600, () => el('s-details').classList.add('show'));
+    t(25200, () => el('s-details').classList.add('hide'));
+    t(26000, () => el('s-rsvp').classList.add('show'));
+  });
+
+  const canvas = el('petals'), ctx = canvas.getContext('2d');
+  const W = canvas.width = 720, H = canvas.height = 1280;
+  const COLORS = ['rgba(232,213,204,.75)', 'rgba(212,188,139,.55)', 'rgba(250,240,228,.85)', 'rgba(200,180,145,.45)'];
+  const petals = [];
+  function newPetal(anywhere) {
+    return {
+      x: Math.random() * W, y: anywhere ? Math.random() * H : -20,
+      r: 5 + Math.random() * 9, vy: .5 + Math.random() * .9,
+      drift: .3 + Math.random() * .6, phase: Math.random() * Math.PI * 2,
+      spin: (Math.random() - .5) * .02, angle: Math.random() * Math.PI * 2,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)]
+    };
+  }
+  for (let i = 0; i < 20; i++) petals.push(newPetal(true));
+  (function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const now = Date.now() / 1000;
+    petals.forEach((p, i) => {
+      p.y += p.vy; p.x += Math.sin(now + p.phase) * p.drift; p.angle += p.spin;
+      if (p.y > H + 25) petals[i] = newPetal(false);
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle + Math.sin(now + p.phase) * .4);
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.moveTo(0, -p.r);
+      ctx.quadraticCurveTo(p.r * .9, -p.r * .3, 0, p.r);
+      ctx.quadraticCurveTo(-p.r * .9, -p.r * .3, 0, -p.r);
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  })();
+</script>
+
+</body>
+</html>
