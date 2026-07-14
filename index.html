@@ -455,7 +455,7 @@
     50%      { opacity: 1; }
   }
   #intro.opening .intro-title,
-  #intro.opening .tap-hint { opacity: 0; }
+  #intro.opening .tap-hint { opacity: 0; animation: none; }
 
   body.pre-intro .arch-frame,
   body.pre-intro .fade-item,
@@ -545,6 +545,10 @@
     document.body.classList.remove('pre-intro');
     document.body.classList.add('opened');
     intro.classList.add('opening');
+    intro.querySelectorAll('.intro-title, .tap-hint').forEach(n => {
+      n.style.animation = 'none';
+      n.style.opacity = '0';
+    });
     setTimeout(() => intro.remove(), reducedMotion ? 50 : 2600);
   }
   if (reducedMotion) {
