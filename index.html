@@ -54,6 +54,28 @@
     pointer-events: none;
   }
 
+  /* ================= CURTAINS ================= */
+  .curtain {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 51.5%;
+    z-index: 70;
+    transition: transform 2.5s cubic-bezier(.65,0,.25,1) .7s;
+  }
+  .curtain-l {
+    left: 0;
+    background: #6d7057 url('https://cdn.sanity.io/images/ne0x6yp7/production/ac30db24255d8aede3c8ff6a8aa25388dbe66562-1408x768.jpg?rect=0,0,704,768&w=1000&fm=webp&q=80') right center / cover no-repeat;
+    box-shadow: 10px 0 35px rgba(15,15,8,.55);
+  }
+  .curtain-r {
+    right: 0;
+    background: #6d7057 url('https://cdn.sanity.io/images/ne0x6yp7/production/ac30db24255d8aede3c8ff6a8aa25388dbe66562-1408x768.jpg?rect=704,0,704,768&w=1000&fm=webp&q=80') left center / cover no-repeat;
+    box-shadow: -10px 0 35px rgba(15,15,8,.55);
+  }
+  body.curtains-open .curtain-l { transform: translateX(-103%); }
+  body.curtains-open .curtain-r { transform: translateX(103%); }
+
   /* ================= COVER ================= */
   #cover {
     position: fixed;
@@ -76,7 +98,7 @@
     text-transform: uppercase;
     color: #fdf9ef;
     text-shadow: 0 1px 10px rgba(20,15,10,.55);
-    animation: riseIn 1.4s ease .3s backwards;
+    animation: riseIn 1.4s ease 1.7s backwards;
   }
   .cover-names {
     font-family: 'Great Vibes', cursive;
@@ -86,7 +108,7 @@
     line-height: 1.05;
     text-shadow: 0 3px 24px rgba(20,15,10,.64);
     margin: 1vh 0 .6vh;
-    animation: riseIn 1.4s ease .55s backwards;
+    animation: riseIn 1.4s ease 1.95s backwards;
   }
   .cover-names-ar {
     font-family: 'Gulzar', serif;
@@ -95,7 +117,7 @@
     color: #f3e7d0;
     text-shadow: 0 1px 12px rgba(20,15,10,.6);
     margin-bottom: 4vh;
-    animation: riseIn 1.4s ease .75s backwards;
+    animation: riseIn 1.4s ease 2.15s backwards;
   }
   @keyframes riseIn {
     from { opacity: 0; transform: translateY(16px); }
@@ -108,7 +130,7 @@
     width: min(66vw, 320px, 48vh);
     aspect-ratio: 10 / 7;
     perspective: 1000px;
-    animation: riseIn 1.4s ease .95s backwards;
+    animation: riseIn 1.4s ease 2.35s backwards;
     filter: drop-shadow(0 28px 42px rgba(15,12,8,.45));
     transition: opacity .55s ease, transform .55s ease, filter .55s ease;
   }
@@ -199,7 +221,7 @@
     text-transform: uppercase;
     color: #fff5e4;
     text-shadow: 0 1px 10px rgba(20,15,10,.6);
-    animation: riseIn 1.4s ease 1.2s backwards, hintPulse 2.8s ease-in-out 2.4s infinite;
+    animation: riseIn 1.4s ease 2.6s backwards, hintPulse 2.8s ease-in-out 4s infinite;
   }
   .cover-hint .ar { letter-spacing: normal; font-size: 1.2em; }
   @keyframes hintPulse {
@@ -518,6 +540,9 @@
 
 <div class="veil"></div>
 
+<div class="curtain curtain-l" aria-hidden="true"></div>
+<div class="curtain curtain-r" aria-hidden="true"></div>
+
 <div id="letter" aria-hidden="false">
   <img class="letter-seal" src="https://cdn.sanity.io/images/ne0x6yp7/production/ba08132854aba4b7e02876833d3bfd2be72f93f7-1408x768.jpg?rect=534,202,340,340&w=400&fm=webp&q=90" alt="">
   <p class="bismillah li" style="--d:.15s">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
@@ -593,6 +618,12 @@
     setTimeout(() => letter.classList.add('out'), reducedMotion ? 0 : 2050);
     setTimeout(() => letter.classList.add('shown'), reducedMotion ? 0 : 2850);
   }
+  /* curtains part on load */
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.body.classList.add('curtains-open');
+    setTimeout(() => document.querySelectorAll('.curtain').forEach(c => c.remove()), reducedMotion ? 100 : 3600);
+  }));
+
   if (reducedMotion) {
     openInvitation();
   } else {
