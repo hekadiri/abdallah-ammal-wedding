@@ -182,7 +182,7 @@
     position: fixed;
     left: 50%;
     top: 50%;
-    width: min(94vw, 620px, calc(94dvh * .72));
+    width: 94vw;
     height: 94dvh;
     z-index: 10;
     background: #f6f0e1 url('https://cdn.sanity.io/images/ne0x6yp7/production/7a944daab58eb761895d3cf374d887747c41858c-848x1264.jpg?w=1000&fm=webp&q=85') center / 100% 100% no-repeat;
@@ -200,6 +200,21 @@
   #letter.out {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
+  }
+  /* wider screens: lock the letter's paper proportions so type and sheet scale together */
+  @media (min-width: 701px) {
+    #letter {
+      height: min(92dvh, 900px);
+      width: calc(min(92dvh, 900px) * .72);
+      padding: 8.5% 11.5% 6.5%;
+    }
+    .invite-ar { font-size: clamp(14px, 1.75vh, 17.5px); }
+    .invite-en { font-size: clamp(10.5px, 1.4vh, 14px); }
+    .date-en { white-space: nowrap; font-size: clamp(13px, 1.75vh, 16.5px); letter-spacing: .08em; }
+    .venue-addr { white-space: nowrap; font-size: clamp(11px, 1.45vh, 15px); }
+    .blessing-ar { font-size: clamp(12px, 1.7vh, 17px); text-wrap: balance; }
+    .blessing-en { text-wrap: balance; }
+    .rsvp-ar { font-size: clamp(12px, 1.7vh, 17px); text-wrap: balance; }
   }
 
   .letter-seal {
