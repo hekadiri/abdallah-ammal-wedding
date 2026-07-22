@@ -38,6 +38,21 @@
 
   .ar { font-family: 'Amiri', serif; direction: rtl; }
 
+  .note-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: #9b9486 url('assets/note-open-landscape.jpg') center / cover no-repeat;
+    opacity: 0;
+    transform: scale(1.035);
+    transition: opacity 1.35s ease, transform 2.2s cubic-bezier(.22,1,.36,1);
+    pointer-events: none;
+  }
+  body.note-open .note-backdrop {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   .veil {
     position: fixed;
     inset: 0;
@@ -45,6 +60,12 @@
       linear-gradient(90deg, rgba(17, 19, 16, .5), rgba(17, 19, 16, .08) 38%, rgba(17, 19, 16, .14) 62%, rgba(17, 19, 16, .58)),
       radial-gradient(ellipse 80% 70% at 50% 48%, rgba(255, 250, 241, .08), rgba(18, 15, 11, .5));
     z-index: 1;
+    transition: background 1.2s ease;
+  }
+  body.note-open .veil {
+    background:
+      linear-gradient(90deg, rgba(17, 19, 16, .24), rgba(17, 19, 16, .02) 38%, rgba(17, 19, 16, .04) 62%, rgba(17, 19, 16, .3)),
+      radial-gradient(ellipse 75% 72% at 50% 48%, rgba(255, 250, 241, .14), rgba(18, 15, 11, .3));
   }
 
   #petals {
@@ -130,6 +151,7 @@
     width: min(66vw, 320px, 48vh);
     aspect-ratio: 10 / 7;
     perspective: 1000px;
+    transform-style: preserve-3d;
     animation: riseIn 1.4s ease 2.35s backwards;
     filter: drop-shadow(0 28px 42px rgba(15,12,8,.45));
     transition: opacity .55s ease, transform .55s ease, filter .55s ease;
@@ -149,64 +171,90 @@
   .env-body {
     position: absolute;
     inset: 0;
-    background: linear-gradient(160deg, #f1ead8 0%, #e9e0ca 100%);
-    border: 1px solid rgba(255,255,255,.52);
+    background: linear-gradient(155deg, #fefdfa 0%, #f4efe6 100%);
+    border: 1px solid rgba(150,120,80,.28);
     border-radius: 7px;
     overflow: hidden;
-    box-shadow: inset 0 0 0 1px rgba(160,140,105,.22);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.6);
   }
-  .fold-l, .fold-r, .fold-b {
+  /* back-flap pocket seams rising from the bottom corners */
+  .fold-l, .fold-r {
     position: absolute;
     inset: 0;
   }
   .fold-l {
-    background: linear-gradient(100deg, #e7ddc5 0%, #eee5d1 70%);
-    clip-path: polygon(0 0, 0 100%, 52% 52%);
-    filter: drop-shadow(2px 0 2px rgba(90,79,63,.32));
+    background: linear-gradient(120deg, #efe8da 0%, #fbf7ef 72%);
+    clip-path: polygon(0 100%, 0 40%, 50% 100%);
+    filter: drop-shadow(1px 0 1px rgba(150,120,80,.16));
   }
   .fold-r {
-    background: linear-gradient(-100deg, #e7ddc5 0%, #eee5d1 70%);
-    clip-path: polygon(100% 0, 100% 100%, 48% 52%);
-    filter: drop-shadow(-2px 0 2px rgba(90,79,63,.32));
+    background: linear-gradient(-120deg, #efe8da 0%, #fbf7ef 72%);
+    clip-path: polygon(100% 100%, 100% 40%, 50% 100%);
+    filter: drop-shadow(-1px 0 1px rgba(150,120,80,.16));
   }
-  .fold-b {
-    background: linear-gradient(180deg, #ede4cf 0%, #f3ecda 60%);
-    clip-path: polygon(0 100%, 100% 100%, 50% 42%);
-    filter: drop-shadow(0 -2px 3px rgba(90,79,63,.38));
-  }
-  .env-note {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 7.5%;
-    text-align: center;
-    font-family: 'Great Vibes', cursive;
-    font-weight: 400;
-    font-size: clamp(15px, 2.3vh, 22px);
-    color: rgba(92,31,46,.8);
-    z-index: 2;
-  }
+  /* the flap folding down to a point */
   .flap {
     position: absolute;
     inset: 0;
-    clip-path: polygon(0 0, 100% 0, 50% 56%);
-    background: linear-gradient(180deg, #f2ead6 0%, #e4d9bf 85%, #dccfb2 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 54%);
+    background: linear-gradient(180deg, #fefdfb 0%, #f3ede2 86%, #ece4d5 100%);
     transform-origin: 50% 0;
-    transition: transform .95s cubic-bezier(.55,0,.3,1);
+    transform: rotateX(0deg);
+    transition: transform .85s cubic-bezier(.55,0,.3,1) .22s, filter .7s ease .22s;
     z-index: 3;
-    filter: drop-shadow(0 3px 4px rgba(90,79,63,.45));
+    filter: drop-shadow(0 3px 5px rgba(150,120,80,.4));
+    backface-visibility: visible;
+    will-change: transform;
   }
-  .env.open .flap { transform: rotateX(177deg); }
+  .flap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 100% 0, 50% 54%);
+    background: linear-gradient(180deg, transparent 60%, rgba(150,120,80,.14));
+  }
+  .env.open .flap {
+    transform: rotateX(-180deg);
+    filter: drop-shadow(0 -6px 7px rgba(150,120,80,.24));
+  }
+  /* burgundy cross ribbon */
+  .ribbon-v, .ribbon-h {
+    position: absolute;
+    z-index: 4;
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .ribbon-v {
+    top: -2%;
+    bottom: -2%;
+    left: 50%;
+    width: 13.5%;
+    transform: translateX(-50%);
+    background:
+      linear-gradient(90deg, #3f1623 0%, #7a2b3d 38%, #8c3348 50%, #6a2536 66%, #3f1623 100%);
+    box-shadow: 0 0 0 1px rgba(210,181,121,.5), 0 4px 12px rgba(40,12,20,.35);
+  }
+  .ribbon-h {
+    left: -2%;
+    right: -2%;
+    top: 56%;
+    height: 19.3%;
+    transform: translateY(-50%);
+    background:
+      linear-gradient(180deg, #3f1623 0%, #7a2b3d 38%, #8c3348 50%, #6a2536 66%, #3f1623 100%);
+    box-shadow: 0 0 0 1px rgba(210,181,121,.5), 0 4px 12px rgba(40,12,20,.35);
+  }
+  .env.open .ribbon-v { opacity: 0; transform: translateX(-50%) scaleY(.6); }
+  .env.open .ribbon-h { opacity: 0; transform: translateY(-50%) scaleX(.6); }
   .env-seal {
     position: absolute;
     left: 50%;
     top: 56%;
     transform: translate(-50%, -50%);
-    width: clamp(64px, 17vw, 88px);
+    width: clamp(58px, 15vw, 78px);
     border-radius: 50%;
-    z-index: 4;
-    box-shadow: 0 8px 20px rgba(40,12,20,.45);
-    filter: saturate(1.08) contrast(1.04);
+    z-index: 5;
+    box-shadow: 0 8px 20px rgba(40,12,20,.5);
+    filter: saturate(1.08) contrast(1.05);
     transition: opacity .45s ease, transform .45s ease;
   }
   .env.open .env-seal {
@@ -328,9 +376,10 @@
     direction: rtl;
     font-weight: 400;
     font-size: clamp(30px, 3.85vh, 44px);
-    line-height: 1.14;
+    line-height: 1.2;
     color: var(--burgundy);
-    white-space: nowrap;
+    max-width: 100%;
+    overflow-wrap: break-word;
   }
   .names-en {
     font-family: 'Great Vibes', cursive;
@@ -339,7 +388,13 @@
     line-height: 1.05;
     color: var(--gold);
     margin-top: .2vh;
-    white-space: nowrap;
+    max-width: 100%;
+  }
+  /* keep every Arabic line inside the frame regardless of the device font */
+  #letter .ar {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: normal;
   }
 
   .date-en {
@@ -468,65 +523,63 @@
   .rsvp-btn:hover { transform: translateY(-2px) scale(1.02); }
 
   @media (max-width: 700px) {
-    html, body {
-      overflow-x: hidden;
-      overflow-y: auto;
-      min-height: 100%;
+    html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
     body {
-      background-position: center top;
+      width: 100%;
+      height: 100%;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: none;
+    }
+    body.note-open::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: max(100dvh, min(213vw, 986px));
+      pointer-events: none;
+    }
+    body {
+      background-position: center;
     }
     #letter {
-      width: min(116vw, 600px);
-      height: auto;
+      position: absolute;
+      top: max(12px, env(safe-area-inset-top));
+      width: min(100vw, 463px);
+      height: min(216.2vw, 1001px);
+      min-height: 0;
       max-height: none;
-      min-height: clamp(880px, 215vw, 1000px);
-      background-color: #f2eadd;
-      background-image: url('assets/letter-paper-texture.png');
-      background-repeat: repeat;
-      background-size: 210px 210px;
-      background-origin: content-box;
-      background-clip: content-box;
-      border: 1px solid transparent;
-      border-image-source: url('assets/letter-lace-frame.png');
-      border-image-slice: 132 76 114 76;
-      border-image-width:
-        clamp(120px, 37.1vw, 192px)
-        clamp(68px, 21.4vw, 111px)
-        clamp(105px, 32vw, 166px);
-      border-image-repeat: stretch repeat;
-      border-image-outset: 0;
-      gap: 9px;
+      background: none;
+      border: 0;
+      border-radius: 0;
+      filter: drop-shadow(0 20px 26px rgba(12, 10, 7, .38));
+      gap: clamp(5px, .72dvh, 8px);
       padding:
-        clamp(120px, 37.1vw, 192px)
-        clamp(68px, 21.4vw, 111px)
-        clamp(105px, 32vw, 166px);
+        min(17dvh, 36.7vw)
+        min(9.1dvh, 18vw)
+        min(15.5dvh, 32.1vw);
+      overflow: visible;
+      transform: translateX(-50%) scale(.15);
+      transform-origin: 50% 50%;
+      margin-bottom: max(12px, env(safe-area-inset-bottom));
     }
     #letter::before {
       content: '';
       position: absolute;
       z-index: 0;
-      top: calc(clamp(120px, 37.1vw, 192px) - 2px);
-      right: calc(clamp(68px, 21.4vw, 111px) - 2px);
-      bottom: calc(clamp(105px, 32vw, 166px) - 2px);
-      left: calc(clamp(68px, 21.4vw, 111px) - 2px);
-      background-color: #f2eadd;
-      background-image: url('assets/letter-paper-texture.png');
-      background-repeat: repeat;
-      background-size: 210px 210px;
+      inset: 0;
+      background: url('assets/mobile-letter-filled-transparent.png') center / 100% 100% no-repeat;
       pointer-events: none;
     }
     #letter.out {
-      position: absolute;
-      top: max(18px, env(safe-area-inset-top));
       transform: translateX(-50%) scale(1);
-      margin-bottom: 18px;
     }
-    .invite-ar {
-      line-height: 1.6;
-    }
-    .names-ar {
-      margin-top: 6px;
+    .section-break {
+      padding-top: clamp(6px, .8dvh, 9px);
     }
     .date-en {
       letter-spacing: .06em;
@@ -538,12 +591,19 @@
       margin-right: auto;
     }
     .countdown {
-      gap: 6px;
+      width: 84%;
+      max-width: 212px;
+      margin-left: auto;
+      margin-right: auto;
+      gap: 4px;
     }
     .cd-cell {
       flex: 1 1 0;
+      width: auto;
       min-width: 0;
-      max-width: 68px;
+      max-width: none;
+      padding: 4px 1px 3px;
+      border-radius: 5px;
     }
   }
 
@@ -559,6 +619,7 @@
 </head>
 <body>
 
+<div class="note-backdrop" aria-hidden="true"></div>
 <div class="veil"></div>
 
 <div class="curtain curtain-l" aria-hidden="true"></div>
@@ -607,10 +668,10 @@
     <div class="env-body">
       <div class="fold-l"></div>
       <div class="fold-r"></div>
-      <div class="fold-b"></div>
-      <p class="env-note">To our beloved family &amp; friends</p>
     </div>
     <div class="flap"></div>
+    <div class="ribbon-v"></div>
+    <div class="ribbon-h"></div>
     <img class="env-seal" src="https://cdn.sanity.io/images/ne0x6yp7/production/ba08132854aba4b7e02876833d3bfd2be72f93f7-1408x768.jpg?rect=534,202,340,340&w=400&fm=webp&q=90" alt="">
   </div>
   <p class="cover-hint">Open the invitation · <span class="ar">افتح الدعوة</span></p>
@@ -632,11 +693,12 @@
     opened = true;
     cover.classList.add('opening');
     env.classList.add('open');
-    setTimeout(() => env.classList.add('away'), reducedMotion ? 0 : 900);
-    setTimeout(() => cover.classList.add('fade'), reducedMotion ? 0 : 1250);
-    setTimeout(() => cover.remove(), reducedMotion ? 60 : 2000);
-    setTimeout(() => letter.classList.add('out'), reducedMotion ? 0 : 2050);
-    setTimeout(() => letter.classList.add('shown'), reducedMotion ? 0 : 2850);
+    setTimeout(() => env.classList.add('away'), reducedMotion ? 0 : 1200);
+    setTimeout(() => cover.classList.add('fade'), reducedMotion ? 0 : 1450);
+    setTimeout(() => document.body.classList.add('note-open'), reducedMotion ? 0 : 1450);
+    setTimeout(() => cover.remove(), reducedMotion ? 60 : 2150);
+    setTimeout(() => letter.classList.add('out'), reducedMotion ? 0 : 2200);
+    setTimeout(() => letter.classList.add('shown'), reducedMotion ? 0 : 3000);
   }
   /* curtains part on load */
   requestAnimationFrame(() => requestAnimationFrame(() => {
