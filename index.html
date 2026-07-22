@@ -540,7 +540,7 @@
       content: '';
       display: block;
       width: 1px;
-      height: max(100dvh, min(213vw, 986px));
+      height: 100dvh;
       pointer-events: none;
     }
     body {
@@ -548,9 +548,16 @@
     }
     #letter {
       position: absolute;
-      top: max(12px, env(safe-area-inset-top));
-      width: min(100vw, 463px);
-      height: min(216.2vw, 1001px);
+      /* Frame art is 1 : 2.162 (w : h). Size the card from BOTH the page
+         width and the page height so the whole letter always fits on screen,
+         then pin it to the top. */
+      --gap-top: max(6px, env(safe-area-inset-top));
+      --gap-bottom: max(6px, env(safe-area-inset-bottom));
+      --avail-h: calc(100dvh - var(--gap-top) - var(--gap-bottom));
+      --card-w: min(100vw, 463px, calc(var(--avail-h) / 2.162));
+      top: var(--gap-top);
+      width: var(--card-w);
+      height: calc(var(--card-w) * 2.162);
       min-height: 0;
       max-height: none;
       background: none;
@@ -558,14 +565,15 @@
       border-radius: 0;
       filter: drop-shadow(0 20px 26px rgba(12, 10, 7, .38));
       gap: clamp(5px, .72dvh, 8px);
+      /* Padding tracks the card's own size (via --card-w) so the writing area
+         stays inside the lace frame at every screen size. */
       padding:
-        min(17dvh, 36.7vw)
-        min(9.1dvh, 18vw)
-        min(15.5dvh, 32.1vw);
+        calc(var(--card-w) * .367)
+        calc(var(--card-w) * .18)
+        calc(var(--card-w) * .321);
       overflow: visible;
       transform: translateX(-50%) scale(.15);
       transform-origin: 50% 50%;
-      margin-bottom: max(12px, env(safe-area-inset-bottom));
     }
     #letter::before {
       content: '';
